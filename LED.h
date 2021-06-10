@@ -14,6 +14,12 @@ class LED {
       Serial.println(B);
     };
 
+    void custom(byte valueR, byte valueG, byte valueB) {
+      analogWrite(R, valueR);
+      analogWrite(G, valueG);
+      analogWrite(B, valueB);
+    }
+
     void yellow() {
       digitalWrite(R, true);
       digitalWrite(G, true);

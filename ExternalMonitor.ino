@@ -19,10 +19,10 @@ void setup() {
   pinMode(13, OUTPUT);
   pinMode(10, OUTPUT);
   pinMode(9, OUTPUT);
-  pinMode(8, OUTPUT);
+  pinMode(6, OUTPUT);
   Serial.begin(115200);
 
-  led = new LED(10, 9, 8);
+  led = new LED(10, 9, 6);
   led->red();
 
   bool temp = false;
