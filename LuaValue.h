@@ -2,6 +2,10 @@
 #define __LUAVALUE__
 
 #include "Vector.h"
+#include "Constants.h"
+
+const char[] SERIALIZE_FAIL   = "\"Failed to serialize.\"";
+const byte SERIALIZE_FAIL_LEN = 22;
 
 enum LType {
   uninitialized = 0, string = 1, number = 2, _boolean = 3, table = 4, nil = 5
@@ -55,12 +59,6 @@ class LuaValue {
 byte LuaValue::MAX_ALLOC = 30;
 
 
-const char OPEN_BRACE = '{';
-const char CLOSE_BRACE = '}';
-const char COMMA = ',';
-const char QUOTE = '"';
-const char* SERIALIZE_FAIL = "\"Failed to serialize.\"";
-const byte SERIALIZE_FAIL_LEN = 22;
 class LuaTable: public LuaValue {
   public:
     LuaTable() : LuaValue(LType::table) {

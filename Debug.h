@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 class Debug {
-  public: 
+  public:
     Debug(HardwareSerial* S) {
       s = S;
     }
@@ -15,7 +15,7 @@ class Debug {
     void SetDebugDelay(int n) {
       delayTime = n;
     }
-    void SetScope(const String& scope) {
+    void SetScope(const char* scope) {
       scoped = true;
       this->scope = scope;
     }
@@ -34,7 +34,7 @@ class Debug {
       }
     }
 
-    void print(const String& data, bool showScope) {
+    void print(const char* data, bool showScope) {
       if (debugEnabled) {
         if (showScope)
           this->printScope();
@@ -42,7 +42,7 @@ class Debug {
         delay(delayTime);
       }
     }
-    void println(const String& data, bool showScope) {
+    void println(const char* data, bool showScope) {
       if (debugEnabled) {
         if (showScope)
           this->printScope();
@@ -67,24 +67,24 @@ class Debug {
       }
     }
 
-    void println(const String& data) {
+    void println(const char* data) const {
       this->println(data, true);
     }
-    void println(const int& data) {
+    void println(const int& data) const {
       this->println(data, true);
     }
-    void print(const String& data) {
+    void print(const char* data) const {
       this->print(data, true);
     }
-    void print(const int& data) {
+    void print(const int& data) const {
       this->print(data, true);
     }
-  
+
   private:
     HardwareSerial* s;
     bool debugEnabled = false, scoped = false;
-    int delayTime = 1000;
-    String scope = "";
+    short delayTime = 1000;
+    char[30] scope;
 };
 
 #endif

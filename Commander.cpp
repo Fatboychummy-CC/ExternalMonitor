@@ -7,6 +7,7 @@
 #include "LuaValue.h"
 #include "Debug.h"
 #include "LED.h"
+#include "Constants.h"
 
 String ReadNext(HardwareSerial*);
 
@@ -25,22 +26,11 @@ const char ARG_LOOP_SCOPE[] = "ArgLoop";
 const char RUN_COMMAND_SCOPE[] = "RunCommand";
 const char BLINK_SCOPE = "Blink";
 
-const char UNAVAILABLE[] = "This method is currently unavailable.";
-const char NO_CONNECTION[] = "Not connected.";
-
-const char CHEVRON = '>';
-const char UNDERSCORE = '_';
-const char SPACE = ' ';
-const char SEMICOLON = ';';
-const char BACKSLASH = '\\';
-
-
 void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
   Commander::blinkSet = false;
   if (S->available()) {
     d->SetScope(LOOP_SCOPE);
-    String str;
-    int op = 0, numArgs = 0;
+    String strbyte op = 0, numArgs = 0;
     LuaTable arguments;
 
     digitalWrite(13, true);
@@ -63,10 +53,10 @@ void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT)
 
     d->SetScope(ARG_LOOP_SCOPE);
     // for each argument:
-    for (int i = 0; i < numArgs; i++) {
+    for (byte i = 0; i < numArgs; i++) {
       d->print(ARG);
       d->println(i, false);
-      int ctype;
+      byte ctype;
 
       // read the type
       str = ReadNext(S);
