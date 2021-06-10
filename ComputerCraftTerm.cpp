@@ -71,31 +71,16 @@ LuaValue* ComputerCraftTerm::getTextScale() {
 
     // writers
 
-LuaValue* ComputerCraftTerm::write(const String& text) {
-  String old = d->GetScope();
-  d->SetScope(F("ComputerCraftTerm::write"));
-  d->print("Writing: ");
-  d->println(text, false);
-  
+LuaValue* ComputerCraftTerm::write(const char* text) {
   oled->print(text);
   externalX += text.length();
   cursorX += (text.length() + 1) * oled->fontWidth();
-  d->print(F("New cursor pos: X = "));
-  d->print(String(externalX), false);
-  d->print(",", false);
-  d->print(String(cursorX), false);
-  d->print(F(" | Y = "), false);
-  d->print(String(externalY), false);
-  d->print(",", false);
-  d->println(String(cursorY), false);
-
-  d->SetScope(old);
 
   return new LuaNil();
 }
 
-LuaValue* ComputerCraftTerm::scroll(int y) {
-  oled->scrollMemory(y * 8); // characters are a strip of 8 chars tall
+LuaValue* ComputerCraftTerm::scroll(byte y) {
+  oled->scrollMemory(y * 8); // characters are a strip of 8 pixels tall
 
   return new LuaNil();
 }
@@ -124,27 +109,13 @@ LuaValue* ComputerCraftTerm::blit(const String& text, const String& textColor, c
 
     // setters
 
-LuaValue* ComputerCraftTerm::setCursorPos(int x, int y) {
-  String old = d->GetScope();
-  d->SetScope("ComputerCraftTerm::setCursorPos");
-  
-  cursorX = (x - 1) * (int)oled->fontWidth() + (x - 1); // subtract 1 since we index from 0 unlike Lua.
+LuaValue* ComputerCraftTerm::setCursorPos(byte x, byte y) {
+  cursorX = (x - 1) * (byte)oled->fontWidth() + (x - 1); // subtract 1 since we index from 0 unlike Lua.
   externalX = x;
   cursorY = (y - 1); // y height is always multiplied by 8 internally.
   externalY = y;
 
-  d->print(F("New cursor pos: X = "));
-  d->print(String(externalX), false);
-  d->print(",", false);
-  d->print(String(cursorX), false);
-  d->print(F(" | Y = "), false);
-  d->print(String(externalY), false);
-  d->print(",", false);
-  d->println(String(cursorY), false);
-
   oled->setCursor(cursorX, cursorY);
-
-  d->SetScope(old);
 
   return new LuaNil();
 }
@@ -164,7 +135,7 @@ LuaValue* ComputerCraftTerm::setPaletteColor(int index, int r, int g, int b) {}
     // Scale value between 1 and 10.
     // Input scale multiplied by 2.
 
-LuaValue* ComputerCraftTerm::setTextScale(int scale) {
+LuaValue* ComputerCraftTerm::setTextScale(byte scale) {
   if (scale == 1) {
     oled->set1X();
   } else {
@@ -192,25 +163,28 @@ bool ComputerCraftTerm::expect(LuaValue* argument, const LType& expected) {
   return argument->type() != expected;
 }
 
+const char[] BAD_ARG = "BadArg";
+const char[] BAD_ARGUMENTS = "Bad arguments.";
+const char[] UNKNOWN_COMMAND = "Unknown command.";
 LuaTable* ComputerCraftTerm::badArg() {
-  d->println("BadArg");
+  d->println(BAD_ARG);
   LuaTable* LT = new LuaTable();
   LT->InsertValue(new LuaNil());
-  LT->InsertValue(new LuaString(F("Bad arguments.")));
+  LT->InsertValue(new LuaString(BAD_ARGUMENTS));
 
   return LT;
 }
 
 LuaTable* ComputerCraftTerm::badCommand() {
-  d->println("BadArg");
+  d->println(BAD_ARG);
   LuaTable* LT = new LuaTable();
   LT->InsertValue(new LuaNil());
-  LT->InsertValue(new LuaString(F("Unknown command.")));
+  LT->InsertValue(new LuaString(UNKNOWN_COMMAND));
 
   return LT;
 }
 
-LuaValue* ComputerCraftTerm::RunCommand(int command, LuaTable* arguments) {
+LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
   d->print("Command given: ");
   d->println(command, false);
   switch (command) {
@@ -308,7 +282,7 @@ LuaValue* ComputerCraftTerm::RunCommand(int command, LuaTable* arguments) {
 
       LuaNumber* a1 = arguments->At(0);
       LuaNumber* a2 = arguments->At(1);
-      
+
       return this->setCursorPos(a1->Value, a2->Value);
     } case TermCommands::setCursorBlink: {
       d->println(F("setCursorBlink"));
@@ -317,7 +291,7 @@ LuaValue* ComputerCraftTerm::RunCommand(int command, LuaTable* arguments) {
         return badArg();
 
       LuaBool* a1 = arguments->At(0);
-      
+
       return this->setCursorBlink(a1);
     } case TermCommands::setTextColor: {
       d->println(F("setTextColor"));
@@ -326,7 +300,7 @@ LuaValue* ComputerCraftTerm::RunCommand(int command, LuaTable* arguments) {
         return badArg();
 
       LuaNumber* a1 = arguments->At(0);
-      
+
       return this->setTextColor(a1);
     } case TermCommands::setBackgroundColor: {
       d->println(F("setBackgroundColor"));
@@ -335,7 +309,7 @@ LuaValue* ComputerCraftTerm::RunCommand(int command, LuaTable* arguments) {
         return badArg();
 
       LuaNumber* a1 = arguments->At(0);
-      
+
       return this->setBackgroundColor(a1);
     } case TermCommands::setPaletteColor: {
       d->println(F("setPaletteColor"));
@@ -345,7 +319,7 @@ LuaValue* ComputerCraftTerm::RunCommand(int command, LuaTable* arguments) {
       return new LuaNil();
     } default: {
       d->println(F("default"));
-      
+
       return badCommand();
     }
   }
@@ -354,10 +328,3 @@ LuaValue* ComputerCraftTerm::RunCommand(int command, LuaTable* arguments) {
   d->println(F("This should never happen."));
   return new LuaString(F("This should never happen."));
 }
-
-    /*
-  private:
-    SSD1306AsciiWire* oled;
-    int cursorX = 0, cursorY = 0;
-    int textColor = 0, backgroundColor = 0;
-    bool cursorBlink = false, color = false; */

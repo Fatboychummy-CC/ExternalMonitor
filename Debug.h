@@ -28,9 +28,11 @@ class Debug {
 
     void printScope() {
       if (scoped) {
-        s->print(F("["));
+        s->print(OPEN_BRACKET);
         s->print(scope);
-        s->print(F("]: "));
+        s->print(CLOSE_BRACKET);
+        s->print(SEMICOLON);
+        s->print(SPACE);
       }
     }
 
