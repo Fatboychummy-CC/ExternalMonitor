@@ -70,6 +70,7 @@ class LuaTable: public LuaValue {
       for (byte i = 0; i < _size; i++) {
         delete Storage[i];
       }
+      delete Storage;
     }
 
     byte Serialize() {
@@ -128,7 +129,7 @@ class LuaTable: public LuaValue {
 
   private:
     LuaValue* Storage[5];
-    static char[LuaValue::MAX_ALLOC] Serialized;
+    static char Serialized[LuaValue::MAX_ALLOC];
     byte _size = 0;
 };
 
@@ -158,9 +159,9 @@ class LuaString: public LuaValue {
       return valueSize;
     }
 
-    char[LuaValue::MAX_ALLOC] Value;
+    char Value[LuaValue::MAX_ALLOC];
     byte valueSize;
-    static char[LuaValue::MAX_ALLOC] Serialized;
+    static char Serialized[LuaValue::MAX_ALLOC];
 };
 byte LuaString::bufferSize = 0;
 
@@ -230,7 +231,7 @@ class LuaBool: public LuaValue {
     }
 
     bool Value = false;
-    static char[6] Serialized;
+    static char Serialized[6];
 };
 
 #endif

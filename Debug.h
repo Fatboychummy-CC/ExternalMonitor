@@ -86,7 +86,7 @@ class Debug {
     HardwareSerial* s;
     bool debugEnabled = false, scoped = false;
     short delayTime = 1000;
-    char[30] scope;
+    char scope[30];
 };
 
 #endif
