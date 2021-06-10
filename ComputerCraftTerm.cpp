@@ -71,7 +71,7 @@ LuaValue* ComputerCraftTerm::getTextScale() {
 
     // writers
 
-LuaValue* ComputerCraftTerm::write(String& text) {
+LuaValue* ComputerCraftTerm::write(const String& text) {
   String old = d->GetScope();
   d->SetScope(F("ComputerCraftTerm::write"));
   d->print("Writing: ");
@@ -116,7 +116,7 @@ LuaValue* ComputerCraftTerm::clearLine() {
   return new LuaNil();
 }
 
-LuaValue* ComputerCraftTerm::blit(String& text, String& textColor, String& backgroundColor) {
+LuaValue* ComputerCraftTerm::blit(const String& text, const String& textColor, const String& backgroundColor) {
   // Ignore textcolor and bgcolor currently, as we are running on a black and white screen which cannot invert colors anyways.
 
   return this->write(text);
@@ -164,7 +164,13 @@ LuaValue* ComputerCraftTerm::setPaletteColor(int index, int r, int g, int b) {}
     // Scale value between 1 and 10.
     // Input scale multiplied by 2.
 
-LuaValue* ComputerCraftTerm::setTextScale(double scale) {}
+LuaValue* ComputerCraftTerm::setTextScale(int scale) {
+  if (scale == 1) {
+    oled->set1X();
+  } else {
+    oled->set2X();
+  }
+}
 
 void ComputerCraftTerm::useDebugger(Debug* debug) {
   d = debug;

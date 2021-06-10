@@ -1,6 +1,8 @@
 #ifndef __DEBUG__
 #define __DEBUG__
 
+#include <Arduino.h>
+
 class Debug {
   public: 
     Debug(HardwareSerial* S) {

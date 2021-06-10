@@ -1,6 +1,7 @@
 #ifndef __COMPUTERCRAFTTERM__
 #define __COMPUTERCRAFTTERM__
 
+#include <Arduino.h>
 #include <Wire.h>
 #include "SSD1306Ascii.h"
 #include "SSD1306AsciiWire.h"
@@ -35,11 +36,11 @@ class ComputerCraftTerm {
     LuaValue* getTextScale();
 
     // Writers
-    LuaValue* write(String& text);
+    LuaValue* write(const String& text);
     LuaValue* scroll(int y);
     LuaValue* clear();
     LuaValue* clearLine();
-    LuaValue* blit(String& text, String& textColor, String& backgroundColor);
+    LuaValue* blit(const String& text, const String& textColor, const String& backgroundColor);
 
     // Setters
     LuaValue* setCursorPos(int x, int y);
@@ -48,7 +49,7 @@ class ComputerCraftTerm {
     LuaValue* setBackgroundColor(int color);
     LuaValue* setPaletteColor(int index, int color);
     LuaValue* setPaletteColor(int index, int r, int g, int b);
-    LuaValue* setTextScale(double scale);
+    LuaValue* setTextScale(int scale);
 
     LuaValue* RunCommand(int command, LuaTable* arguments);
 
