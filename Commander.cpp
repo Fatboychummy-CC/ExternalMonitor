@@ -32,6 +32,7 @@ const char CHEVRON = '>';
 const char UNDERSCORE = '_';
 const char SPACE = ' ';
 const char SEMICOLON = ';';
+const char BACKSLASH = '\\';
 
 
 void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
@@ -78,7 +79,7 @@ void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT)
 
       // read the data for the type
       str = ReadNext(S);
-      while (str[str.length() - 1] == '\\') { // catch strings backslash-escaping `;`
+      while (str[str.length() - 1] == BACKSLASH) { // catch strings backslash-escaping `;`
         str.remove(str.length() - 1);
         str += ReadNext(S);
       }

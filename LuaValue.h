@@ -19,7 +19,7 @@ void InsertBuffer(char* buffer, const char* insert, byte pos, byte insertionSize
   }
 
   // Put null character at the end of the inserted string.
-  buffer[insertionSize - 1] = '\0';
+  buffer[insertionSize - 1] = 0;
 }
 
 void Zero(char* buffer, byte bufferSize) {
