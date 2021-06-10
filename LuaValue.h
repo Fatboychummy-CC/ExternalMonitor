@@ -64,12 +64,12 @@ const byte SERIALIZE_FAIL_LEN = 22;
 class LuaTable: public LuaValue {
   public:
     LuaTable() : LuaValue(LType::table) {
-      for (int i = 0; i < 5; i++) {
+      for (byte i = 0; i < 5; i++) {
         Storage[i] = nullptr;
       }
     }
     ~LuaTable() {
-      for (int i = 0; i < _size; i++) {
+      for (byte i = 0; i < _size; i++) {
         delete Storage[i];
       }
     }
@@ -83,7 +83,7 @@ class LuaTable: public LuaValue {
 
       // Insert each item in the storage.
       byte insertPos = 1;
-      for (int i = 0; i < _size; i++) {
+      for (byte i = 0; i < _size; i++) {
         // Tell the object to serialize what it is holding.
         byte len = Storage[i]->Serialize();
 
@@ -120,18 +120,18 @@ class LuaTable: public LuaValue {
       }
     }
 
-    LuaValue* At(int index) {
+    LuaValue* At(byte index) {
       return Storage[index];
     }
 
-    int size() {
+    byte size() {
       return _size;
     }
 
   private:
     LuaValue* Storage[5];
     static char[LuaValue::MAX_ALLOC] Serialized;
-    int _size = 0;
+    byte _size = 0;
 };
 
 class LuaString: public LuaValue {
