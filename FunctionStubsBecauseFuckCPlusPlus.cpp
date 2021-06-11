@@ -15,6 +15,7 @@ void InsertBuffer(char* buffer, const char* insert, byte pos, byte insertionSize
   // Put null character at the end of the inserted string.
   buffer[pos + insertionSize] = 0;
 }
+
 void InsertBuffer(char* buffer, char* insert, byte pos, byte insertionSize, byte bufferSize) {
   // protect against out-of-bounds
   //   if the end of our string is going to be "further" than the end of the buffer,
@@ -43,6 +44,7 @@ void InsertBuffer(char* buffer, const char& insert, byte pos, byte insertionSize
   buffer[pos + insertionSize] = 0;
 }
 
+
 bool BufferEqual(const char* b1, const char* b2, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
     if (b1[i] != b2[i]) return false;
@@ -56,12 +58,14 @@ bool BufferEqual(char* b1, const char* b2, byte bufferSize) {
   }
   return true;
 }
+
 bool BufferEqual(const char* b1, char* b2, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
     if (b1[i] != b2[i]) return false;
   }
   return true;
 }
+
 bool BufferEqual(char* b1, char* b2, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
     if (b1[i] != b2[i]) return false;
