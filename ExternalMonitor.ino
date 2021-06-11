@@ -1,9 +1,9 @@
+#include <Arduino.h>
 #include <Wire.h>
 #include <SoftwareSerial.h>
 #include "SSD1306Ascii.h"
 #include "SSD1306AsciiWire.h"
 #include "ComputerCraftTerm.h"
-#include "LuaValue.h"
 #include "Debug.h"
 #include "Commander.h"
 #include "LED.h"

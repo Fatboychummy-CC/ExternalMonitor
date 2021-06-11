@@ -5,6 +5,12 @@
 #include "SSD1306AsciiWire.h"
 #include "ComputerCraftTerm.h"
 #include "LuaValue.h"
+#include "LuaTable.h"
+#include "LuaNil.h"
+#include "LuaBool.h"
+#include "LuaString.h"
+#include "LuaNumber.h"
+#include "LuaSerial.h"
 #include "Debug.h"
 #include "LED.h"
 #include "Constants.h"
@@ -24,13 +30,14 @@ const char OUT[]    = "OUTPUT : ";
 const char LOOP_SCOPE[] = "Loop";
 const char ARG_LOOP_SCOPE[] = "ArgLoop";
 const char RUN_COMMAND_SCOPE[] = "RunCommand";
-const char BLINK_SCOPE = "Blink";
+const char BLINK_SCOPE[] = "Blink";
 
 void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
   Commander::blinkSet = false;
   if (S->available()) {
     d->SetScope(LOOP_SCOPE);
-    String strbyte op = 0, numArgs = 0;
+    String str;
+    byte op = 0, numArgs = 0;
     LuaTable arguments;
 
     digitalWrite(13, true);
@@ -76,13 +83,13 @@ void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT)
 
       switch (ctype) {
         case LType::number: {
-          arguments.InsertValue(new LuaNumber(str));
+          arguments.InsertValue(new LuaNumber(str)); // LuaNumber is not converted to c_string.
           break;
         } case LType::string: {
-          arguments.InsertValue(new LuaString(str));
+          arguments.InsertValue(new LuaString(str.c_str())); // LuaString isconverted to c_string.
           break;
         } case LType::_boolean: {
-          arguments.InsertValue(new LuaBool(str));
+          arguments.InsertValue(new LuaBool(str.c_str())); // LuaBool is converted to c_string.
           break;
         } default: {
           arguments.InsertValue(new LuaNil());

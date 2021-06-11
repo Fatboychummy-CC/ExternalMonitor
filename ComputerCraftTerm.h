@@ -6,6 +6,7 @@
 #include "SSD1306Ascii.h"
 #include "SSD1306AsciiWire.h"
 #include "LuaValue.h"
+#include "LuaTable.h"
 #include "Debug.h"
 
 /*
@@ -36,11 +37,11 @@ class ComputerCraftTerm {
     LuaValue* getTextScale();
 
     // Writers
-    LuaValue* write(const String& text);
+    LuaValue* write(char* text);
     LuaValue* scroll(byte y);
     LuaValue* clear();
     LuaValue* clearLine();
-    LuaValue* blit(const String& text, const String& textColor, const String& backgroundColor);
+    LuaValue* blit(char* text, char* textColor, char* backgroundColor);
 
     // Setters
     LuaValue* setCursorPos(byte x, byte y);
@@ -66,7 +67,7 @@ class ComputerCraftTerm {
     byte cursorX = 0, cursorY = 0, externalX = 1, externalY = 1;
     int textColor = 0, backgroundColor = 0;
     bool cursorBlink = false, hasColor = false;
-    Vector<String> charbuffer, textColorBuffer, backgroundColorBuffer;
+    // Vector<String> charbuffer, textColorBuffer, backgroundColorBuffer; // We don't need this for now.
     Debug* d;
 };
 

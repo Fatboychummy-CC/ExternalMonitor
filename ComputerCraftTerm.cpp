@@ -1,10 +1,14 @@
 #include <Wire.h>
+#include <Arduino.h>
 #include "SSD1306Ascii.h"
 #include "SSD1306AsciiWire.h"
-#include "Vector.h"
 #include "ComputerCraftTerm.h"
 #include "LuaValue.h"
-#include "LoopbackStream.h"
+#include "LuaTable.h"
+#include "LuaNil.h"
+#include "LuaBool.h"
+#include "LuaString.h"
+#include "LuaNumber.h"
 
 // 0X3C+SA0 - 0x3C or 0x3D
 #define I2C_ADDRESS 0x3C
@@ -71,10 +75,10 @@ LuaValue* ComputerCraftTerm::getTextScale() {
 
     // writers
 
-LuaValue* ComputerCraftTerm::write(const char* text) {
+LuaValue* ComputerCraftTerm::write(char* text) {
   oled->print(text);
-  externalX += text.length();
-  cursorX += (text.length() + 1) * oled->fontWidth();
+  externalX += strlen(text);
+  cursorX += (strlen(text) + 1) * oled->fontWidth();
 
   return new LuaNil();
 }
@@ -101,7 +105,7 @@ LuaValue* ComputerCraftTerm::clearLine() {
   return new LuaNil();
 }
 
-LuaValue* ComputerCraftTerm::blit(const String& text, const String& textColor, const String& backgroundColor) {
+LuaValue* ComputerCraftTerm::blit(char* text, char* textColor, char* backgroundColor) {
   // Ignore textcolor and bgcolor currently, as we are running on a black and white screen which cannot invert colors anyways.
 
   return this->write(text);
@@ -148,24 +152,17 @@ void ComputerCraftTerm::useDebugger(Debug* debug) {
 }
 
 bool ComputerCraftTerm::argCount(LuaTable* arguments, byte numArgs) {
-  d->print("ArgCount: ");
-  d->print(String(arguments->size()), false);
-  d->print(" >= ", false);
-  d->println(String(numArgs), false);
   return arguments->size() < numArgs;
 }
 
 bool ComputerCraftTerm::expect(LuaValue* argument, const LType& expected) {
-  d->print("Expect: ");
-  d->print(String(argument->type()), false);
-  d->print(" == ", false);
-  d->println(String(expected), false);
   return argument->type() != expected;
 }
 
-const char[] BAD_ARG = "BadArg";
-const char[] BAD_ARGUMENTS = "Bad arguments.";
-const char[] UNKNOWN_COMMAND = "Unknown command.";
+const char BAD_ARG[]         = "BadArg";
+const char BAD_ARGUMENTS[]   = "Bad arguments.";
+const char UNKNOWN_COMMAND[] = "Unknown command.";
+
 LuaTable* ComputerCraftTerm::badArg() {
   d->println(BAD_ARG);
   LuaTable* LT = new LuaTable();
@@ -301,7 +298,7 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       LuaNumber* a1 = arguments->At(0);
 
-      return this->setTextColor(a1);
+      return this->setTextColor(a1->Value);
     } case TermCommands::setBackgroundColor: {
       d->println(F("setBackgroundColor"));
 

@@ -18,4 +18,7 @@ const char BACKSLASH     = '\\';
 const char UNAVAILABLE[] = "This method is currently unavailable.";
 const char NO_CONNECTION[] = "Not connected.";
 
+const char SERIALIZE_FAIL[] = "\"Failed to serialize.\"";
+const byte SERIALIZE_FAIL_LEN = 22;
+
 #endif
