@@ -12,4 +12,6 @@ bool BufferEqual(const char* b1, char* b2, byte bufferSize);
 bool BufferEqual(char* b1, const char* b2, byte bufferSize);
 bool BufferEqual(char* b1, char* b2, byte bufferSize);
 
+int freeRam();
+
 #endif

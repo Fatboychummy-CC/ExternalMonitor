@@ -38,6 +38,8 @@ class ComputerCraftTerm {
 
     // Writers
     LuaValue* write(char* text);
+    LuaValue* write(const char* text);
+    LuaValue* write(const char& text);
     LuaValue* scroll(byte y);
     LuaValue* clear();
     LuaValue* clearLine();

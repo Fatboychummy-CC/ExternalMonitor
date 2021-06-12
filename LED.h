@@ -7,11 +7,8 @@ class LED {
   public:
     explicit LED(byte pinR, byte pinG, byte pinB) {
       R = pinR;
-      Serial.println(R);
       G = pinG;
-      Serial.println(G);
       B = pinB;
-      Serial.println(B);
     };
 
     void custom(byte valueR, byte valueG, byte valueB) {

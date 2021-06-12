@@ -12,6 +12,7 @@ const char CHEVRON       = '>';
 const char UNDERSCORE    = '_';
 const char SPACE         = ' ';
 const char SEMICOLON     = ';';
+const char COLON         = ':';
 const char BACKSLASH     = '\\';
 
 // strings

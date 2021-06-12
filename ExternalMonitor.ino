@@ -12,7 +12,7 @@ SSD1306AsciiWire window;
 Debug* D;
 ComputerCraftTerm* CCT;
 LED* led;
-bool connected = true;
+bool connected = false;
 
 //------------------------------------------------------------------------------
 void setup() {

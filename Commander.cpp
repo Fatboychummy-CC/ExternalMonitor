@@ -14,6 +14,7 @@
 #include "Debug.h"
 #include "LED.h"
 #include "Constants.h"
+#include "FunctionStubsBecauseFuckCPlusPlus.h"
 
 String ReadNext(HardwareSerial*);
 
@@ -119,31 +120,39 @@ void Commander::RunOnline(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
 }
 
 void Commander::RunBlink(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
-  d->SetScope(BLINK_SCOPE);
-  d->println(NO_CONNECTION);
-
   digitalWrite(13, Commander::blinkState);
 
+  // clear and draw the chevron only once so it doesn't flicker
   if (!Commander::blinkSet) {
-
+    d->SetScope(BLINK_SCOPE);
+    d->println(NO_CONNECTION);
     CCT->clear();
     CCT->setTextScale(2);
     CCT->setCursorPos(1, 1);
     CCT->write(CHEVRON);
   }
 
+  // Blink the _
+  // if blinkState is true, draw a space, else draw an underscore.
   Commander::blinkSet = true;
   if (Commander::blinkState) {
     Commander::blinkState = false;
-    CCT->setCursorPos(2, 1);
-    CCT->write(SPACE);
+    LuaNil* x = CCT->setCursorPos(2, 1);
+    LuaNil* y = CCT->write(SPACE);
+
+    delete x;
+    delete y;
   } else {
     Commander::blinkState = true;
-    CCT->setCursorPos(2, 1);
-    CCT->write(UNDERSCORE);
+    LuaNil* x = CCT->setCursorPos(2, 1);
+    LuaNil* y = CCT->write(UNDERSCORE);
+
+    delete x;
+    delete y;
   }
 
-  delay(500);
+  // CraftOS cursor-blink delay is 400ms.
+  delay(400);
 }
 
 String ReadNext(HardwareSerial* S) {
