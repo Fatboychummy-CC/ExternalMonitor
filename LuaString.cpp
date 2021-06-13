@@ -8,7 +8,7 @@ char LuaString::Serialized[LuaValue::MAX_ALLOC] = "";
 
 LuaString::LuaString(const String& value) : LuaValue(LType::string) {
   // Clear the buffer.
-  LuaValue::Zero(Value);
+  Zero(Value);
 
   // Insert initial quote.
   InsertBuffer(Value, QUOTE, 0, LuaValue::MAX_ALLOC);
@@ -27,7 +27,7 @@ LuaString::LuaString(char* value) : LuaValue(LType::string) {
   byte bufferSize = strlen(value);
 
   // Clear the buffer.
-  LuaValue::Zero(Value);
+  Zero(Value);
 
   // Insert initial quote.
   InsertBuffer(Value, QUOTE, 0, LuaValue::MAX_ALLOC);
@@ -46,7 +46,7 @@ LuaString::LuaString(const char* value) : LuaValue(LType::string) {
   byte bufferSize = strlen(value);
 
   // Clear the buffer.
-  LuaValue::Zero(Value);
+  Zero(Value);
 
   // Insert initial quote.
   InsertBuffer(Value, QUOTE, 0, LuaValue::MAX_ALLOC);
@@ -67,7 +67,7 @@ LuaString::~LuaString() {
 
 byte LuaString::Serialize() {
   // copy data from object to serialized partition
-  LuaValue::Zero(Serialized);
+  Zero(Serialized);
   InsertBuffer(Serialized, Value, 0, valueSize, LuaValue::MAX_ALLOC);
   return valueSize;
 }

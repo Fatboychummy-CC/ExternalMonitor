@@ -17,7 +17,7 @@ LuaBool::LuaBool(char* value) : LuaValue(LType::_boolean) {
 
 byte LuaBool::Serialize() {
   // Clear the buffer
-  LuaValue::Zero(Serialized);
+  Zero(Serialized);
 
   if (Value) {
     InsertBuffer(Serialized, "true", 0, 4, 6);

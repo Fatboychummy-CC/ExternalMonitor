@@ -9,6 +9,7 @@
 #include "LuaBool.h"
 #include "LuaString.h"
 #include "LuaNumber.h"
+#include "Constants.h"
 
 // 0X3C+SA0 - 0x3C or 0x3D
 #define I2C_ADDRESS 0x3C
@@ -166,9 +167,6 @@ LuaValue* ComputerCraftTerm::setTextScale(byte scale) {
   }
 }
 
-void ComputerCraftTerm::useDebugger(Debug* debug) {
-  d = debug;
-}
 
 bool ComputerCraftTerm::argCount(LuaTable* arguments, byte numArgs) {
   return arguments->size() < numArgs;
@@ -178,12 +176,8 @@ bool ComputerCraftTerm::expect(LuaValue* argument, const LType& expected) {
   return argument->type() != expected;
 }
 
-const char BAD_ARG[]         = "BadArg";
-const char BAD_ARGUMENTS[]   = "Bad arguments.";
-const char UNKNOWN_COMMAND[] = "Unknown command.";
-
 LuaTable* ComputerCraftTerm::badArg() {
-  d->println(BAD_ARG);
+  Debug::println(BAD_ARG);
   LuaTable* LT = new LuaTable();
   LT->InsertValue(new LuaNil());
   LT->InsertValue(new LuaString(BAD_ARGUMENTS));
@@ -192,7 +186,7 @@ LuaTable* ComputerCraftTerm::badArg() {
 }
 
 LuaTable* ComputerCraftTerm::badCommand() {
-  d->println(BAD_ARG);
+  Debug::println(BAD_ARG);
   LuaTable* LT = new LuaTable();
   LT->InsertValue(new LuaNil());
   LT->InsertValue(new LuaString(UNKNOWN_COMMAND));
@@ -201,40 +195,47 @@ LuaTable* ComputerCraftTerm::badCommand() {
 }
 
 LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
-  d->print("Command given: ");
-  d->println(command, false);
+  Debug::print("Command given: ");
+  Debug::println(command, false);
   switch (command) {
     // getters
     case TermCommands::_null:
-      d->println(F("Null"));
+      Debug::println(F("Null"));
+      LuaTable* tbl;
+      tbl = new LuaTable();
 
-      return new LuaNil();
+      tbl->InsertValue(new LuaNil());
+      tbl->InsertValue(new LuaString(NULL_COMMAND));
+
+      Debug::println(F("Test."));
+
+      return tbl;
     case TermCommands::getSize:
-      d->println(F("getSize"));
+      Debug::println(F("getSize"));
 
       return this->getSize();
     case TermCommands::getCursorPos:
-      d->println(F("getCursorPos"));
+      Debug::println(F("getCursorPos"));
 
       return this->getCursorPos();
     case TermCommands::getCursorBlink:
-      d->println(F("getCursorBlink"));
+      Debug::println(F("getCursorBlink"));
 
       return this->getCursorBlink();
     case TermCommands::getTextColor:
-      d->println(F("getTextColor"));
+      Debug::println(F("getTextColor"));
 
       return this->getTextColor();
     case TermCommands::getBackgroundColor:
-      d->println(F("getBackgroundColor"));
+      Debug::println(F("getBackgroundColor"));
 
       return this->getBackgroundColor();
     case TermCommands::isColor:
-      d->println(F("isColor"));
+      Debug::println(F("isColor"));
 
       return this->isColor();
     case TermCommands::getPaletteColor: {
-      d->println(F("getPaletteColor"));
+      Debug::println(F("getPaletteColor"));
 
       if (argCount(arguments, 1) || expect(arguments->At(0), LType::number))
         return badArg();
@@ -242,11 +243,11 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
       LuaNumber* a1 = arguments->At(0);
       return this->getPaletteColor(a1->Value);
     } case TermCommands::getTextScale: {
-      d->println(F("getTextScale"));
+      Debug::println(F("getTextScale"));
 
       return this->getTextScale();
     } case TermCommands::write: { // writers
-      d->println(F("write"));
+      Debug::println(F("write"));
 
       if (argCount(arguments, 1) || expect(arguments->At(0), LType::string))
         return badArg();
@@ -255,7 +256,7 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       return this->write(a1->Value);
     } case TermCommands::scroll: {
-      d->println(F("scroll"));
+      Debug::println(F("scroll"));
 
       if (argCount(arguments, 1) || expect(arguments->At(0), LType::number))
         return badArg();
@@ -265,11 +266,11 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       return this->scroll(a1->Value);
     } case TermCommands::clear: {
-      d->println(F("clear"));
+      Debug::println(F("clear"));
 
       return this->clear();
     } case TermCommands::clearLine: {
-      d->println(F("clearLine"));
+      Debug::println(F("clearLine"));
 
       oled->setCursor(0, cursorY);
       oled->clearToEOL();
@@ -277,7 +278,7 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       return new LuaNil();
     } case TermCommands::blit: {
-      d->println(F("blit"));
+      Debug::println(F("blit"));
 
       if (argCount(arguments, 3) || expect(arguments->At(0), LType::string) || expect(arguments->At(1), LType::string) || expect(arguments->At(2), LType::string))
         return badArg();
@@ -291,7 +292,7 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       return this->blit(a1->Value, a2->Value, a3->Value);
     } case TermCommands::setCursorPos: { // setters
-      d->println(F("setCursorPos"));
+      Debug::println(F("setCursorPos"));
 
       if (argCount(arguments, 2) || expect(arguments->At(0), LType::number) || expect(arguments->At(1), LType::number))
         return badArg();
@@ -301,7 +302,7 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       return this->setCursorPos(a1->Value, a2->Value);
     } case TermCommands::setCursorBlink: {
-      d->println(F("setCursorBlink"));
+      Debug::println(F("setCursorBlink"));
 
       if (argCount(arguments, 1) || expect(arguments->At(0), LType::_boolean))
         return badArg();
@@ -310,7 +311,7 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       return this->setCursorBlink(a1);
     } case TermCommands::setTextColor: {
-      d->println(F("setTextColor"));
+      Debug::println(F("setTextColor"));
 
       if (argCount(arguments, 1) || expect(arguments->At(0), LType::number))
         return badArg();
@@ -319,7 +320,7 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       return this->setTextColor(a1->Value);
     } case TermCommands::setBackgroundColor: {
-      d->println(F("setBackgroundColor"));
+      Debug::println(F("setBackgroundColor"));
 
       if (argCount(arguments, 1) || expect(arguments->At(0), LType::number))
         return badArg();
@@ -328,19 +329,19 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       return this->setBackgroundColor(a1);
     } case TermCommands::setPaletteColor: {
-      d->println(F("setPaletteColor"));
+      Debug::println(F("setPaletteColor"));
       return new LuaNil();
     } case TermCommands::setTextScale: {
-      d->println(F("setTextScale"));
+      Debug::println(F("setTextScale"));
       return new LuaNil();
     } default: {
-      d->println(F("default"));
+      Debug::println(F("default"));
 
       return badCommand();
     }
   }
 
 
-  d->println(F("This should never happen."));
+  Debug::println(F("This should never happen."));
   return new LuaString(F("This should never happen."));
 }

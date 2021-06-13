@@ -9,14 +9,18 @@
 
 class Commander {
   public:
-    static void RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT);
+    static void RunTerminal(HardwareSerial* S, ComputerCraftTerm* CCT);
 
-    static void RunOnline(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT);
+    static void RunOnline(HardwareSerial* S, ComputerCraftTerm* CCT);
 
-    static void RunBlink(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT);
+    static void RunBlink(HardwareSerial* S, ComputerCraftTerm* CCT);
 
     static bool blinkState;
     static bool blinkSet;
+
+  private:
+    static constexpr byte _COMMAND_DATA_LEN = 50;
+    static char _commandData[_COMMAND_DATA_LEN];
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "LuaValue.h"
 #include "FunctionStubsBecauseFuckCPlusPlus.h"
 
 void InsertBuffer(char* buffer, const char* insert, byte pos, byte insertionSize, byte bufferSize) {
@@ -78,4 +79,10 @@ int freeRam() {
   extern int __heap_start, *__brkval;
   int v;
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
+void Zero(char* buffer, byte bufferSize) {
+  for (byte i = 0; i < bufferSize; i++) {
+    buffer[i] = 0;
+  }
 }

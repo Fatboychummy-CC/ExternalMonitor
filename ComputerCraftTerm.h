@@ -62,15 +62,11 @@ class ComputerCraftTerm {
     LuaTable* badArg();
     LuaTable* badCommand();
 
-    void useDebugger(Debug* debug);
-
   private:
     SSD1306AsciiWire* oled;
     byte cursorX = 0, cursorY = 0, externalX = 1, externalY = 1;
     int textColor = 0, backgroundColor = 0;
     bool cursorBlink = false, hasColor = false;
-    // Vector<String> charbuffer, textColorBuffer, backgroundColorBuffer; // We don't need this for now.
-    Debug* d;
 };
 
 #endif

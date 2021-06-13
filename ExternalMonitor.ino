@@ -10,7 +10,6 @@
 #include "Stater.h"
 
 SSD1306AsciiWire window;
-Debug* D;
 ComputerCraftTerm* CCT;
 LED* led;
 Stater* State;
@@ -43,11 +42,8 @@ void setup() {
   Serial.setTimeout(100);
 
   CCT = new ComputerCraftTerm(&window);
-  D = new Debug(&Serial);
-  D->EnableDebugging();
-  D->SetDebugDelay(0);
-
-  CCT->useDebugger(D);
+  Debug::EnableDebugging();
+  Debug::SetDebugDelay(500);
 
   State = new Stater();
   if (debugMode) {
@@ -67,22 +63,22 @@ void loop() {
 
   if (state == Stater::State::DEBUGGING) {
     if (updated)
-      D->println("Debug mode enabled.");
+      Debug::println("Debug mode enabled.");
     led->blue();
-    Commander::RunTerminal(&Serial, D, CCT);
+    Commander::RunTerminal(&Serial, CCT);
   } else if (state == Stater::State::CONNECTED) {
     if (updated)
-      D->println("Connected to network device.");
+      Debug::println("Connected to network device.");
     led->green();
   } else if (state == Stater::State::DISCONNECTED) { // not debugmode, not connected.
     if (updated)
-      D->println("Disconnected from network device.");
+      Debug::println("Disconnected from network device.");
     led->red();
-    Commander::RunBlink(&Serial, D, CCT);
+    Commander::RunBlink(&Serial, CCT);
   } else { // Unknown state.
     if (updated) {
-      D->print("Unknown state: ");
-      D->println(state, false);
+      Debug::print("Unknown state: ");
+      Debug::println(state, false);
     }
   }
 }

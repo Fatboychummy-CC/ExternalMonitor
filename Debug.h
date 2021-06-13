@@ -7,84 +7,29 @@
 
 class Debug {
   public:
-    Debug(HardwareSerial* S) {
-      s = S;
-    }
+    static void EnableDebugging();
+    static void SetDebugDelay(int n);
+    static void SetScope(char* scope);
+    static char* GetScope();
+    static void ClearScope();
 
-    void EnableDebugging() {
-      debugEnabled = true;
-    }
-    void SetDebugDelay(int n) {
-      delayTime = n;
-    }
-    void SetScope(char* scope) {
-      scoped = true;
-      strcpy(this->scope, scope);
-    }
-    char* GetScope() {
-      return this->scope;
-    }
-    void ClearScope() {
-      scoped = false;
-    }
-
-    void printScope() const {
-      if (scoped) {
-        s->print(OPEN_BRACKET);
-        s->print(scope);
-        s->print(CLOSE_BRACKET);
-        s->print(COLON);
-        s->print(SPACE);
-      }
-    }
+    static void printScope();
 
     template<typename T>
-    void print(T& data, bool showScope = true) const {
-      if (debugEnabled) {
-        if (showScope)
-          this->printScope();
-        s->print(data);
-        delay(delayTime);
-      }
-    }
+    static void print(const T& data, bool showScope = true);
 
     template<typename T>
-    void println(const T& data, bool showScope = true) const {
-      if (debugEnabled) {
-        if (showScope)
-          this->printScope();
-        s->println(data);
-        delay(delayTime);
-      }
-    }
+    static void println(const T& data, bool showScope = true);
 
-    void printMemory(bool showScope = true) {
-      int ram = freeRam();
-      if (showScope) {
-        // get the old scope.
-        char oldScope[30];
-        strcpy(scope, oldScope);
+    static void printRam(bool showScope = true);
 
-        // set new temporary scope
-        this->SetScope("HEAP<->STACK DISTANCE");
-        this->printScope();
-
-        // print data
-        s->println(ram);
-
-        // return scope to old scope
-        this->SetScope(oldScope);
-      } else {
-        // print data
-        s->println(ram);
-      }
-    }
+    static void printMemory(bool showScope = true);
 
   private:
-    HardwareSerial* s;
-    bool debugEnabled = false, scoped = false;
-    short delayTime = 1000;
-    char scope[30];
+    static bool debugEnabled, scoped;
+    static short delayTime;
+    static char scope[30];
+    static char oldScope[30];
 };
 
 #endif

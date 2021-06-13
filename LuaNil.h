@@ -11,7 +11,7 @@ class LuaNil: public LuaValue {
 
     char* GetSerialized();
 
-    static char Serialized[4];
+    static char Serialized[LuaValue::MAX_ALLOC];
 };
 
 #endif

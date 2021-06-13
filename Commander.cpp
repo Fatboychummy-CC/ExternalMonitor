@@ -16,72 +16,38 @@
 #include "Constants.h"
 #include "FunctionStubsBecauseFuckCPlusPlus.h"
 
-String ReadNext(HardwareSerial*);
+void ReadNext(HardwareSerial*, char* str, byte len);
 
 bool Commander::blinkState = false;
 bool Commander::blinkSet = false;
+char Commander::_commandData[_COMMAND_DATA_LEN] = "";
 
-const char OP[]     = "OP     : ";
-const char N_ARGS[] = "NUMARGS: ";
-const char ARG[]    = "ARG    : ";
-const char CTYPE[]  = "CTYPE  : ";
-const char DATA[]   = "DATA   : ";
-const char OUT[]    = "OUTPUT : ";
-
-const char LOOP_SCOPE[] = "Loop";
-const char ARG_LOOP_SCOPE[] = "ArgLoop";
-const char RUN_COMMAND_SCOPE[] = "RunCommand";
-const char BLINK_SCOPE[] = "Blink";
-
-void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
+void Commander::RunTerminal(HardwareSerial* S, ComputerCraftTerm* CCT) {
   Commander::blinkSet = false;
   if (S->available()) {
-    d->SetScope(LOOP_SCOPE);
-    String str;
     byte op = 0, numArgs = 0;
     LuaTable arguments;
 
-    digitalWrite(13, true);
 
-    // read the operation
-    str = ReadNext(S);
+    Debug::SetScope(LOOP_SCOPE);
 
-    d->print(OP);
-    d->println(str, false);
+    // zero the array, then collect opcode.
+    Zero(_commandData, _COMMAND_DATA_LEN);
+    ReadNext(S, _commandData, _COMMAND_DATA_LEN);
+    Debug::print(OP);
+    Debug::println(_commandData, false);
+    op = atoi(_commandData);
 
-    op = str.toInt();
+    // Zero again, collect number args.
+    Zero(_commandData, _COMMAND_DATA_LEN);
+    ReadNext(S, _commandData, _COMMAND_DATA_LEN);
+    Debug::print(N_ARGS);
+    Debug::println(_commandData, false);
+    numArgs = atoi(_commandData);
 
-    // read the amount of arguments
-    str = ReadNext(S);
-
-    d->print(N_ARGS);
-    d->println(str, false);
-
-    numArgs = str.toInt();
-
-    d->SetScope(ARG_LOOP_SCOPE);
     // for each argument:
     for (byte i = 0; i < numArgs; i++) {
-      d->print(ARG);
-      d->println(i, false);
-      byte ctype;
-
-      // read the type
-      str = ReadNext(S);
-
-      d->print(CTYPE);
-      d->println(str, false);
-
-      ctype = str.toInt();
-
-
-      // read the data for the type
-      str = ReadNext(S);
-      while (str[str.length() - 1] == BACKSLASH) { // catch strings backslash-escaping `;`
-        str.remove(str.length() - 1);
-        str += ReadNext(S);
-      }
-
+/*
       switch (ctype) {
         case LType::number: {
           arguments.InsertValue(new LuaNumber(str)); // LuaNumber is not converted to c_string.
@@ -98,36 +64,36 @@ void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT)
         }
       }
 
-      d->print(DATA);
-      d->println(str, false);
+      Debug::print(DATA);
+      Debug::println(str, false);
+*/
     }
 
-    d->SetScope(RUN_COMMAND_SCOPE);
+    Debug::SetScope(RUN_COMMAND_SCOPE);
     LuaValue* returned = CCT->RunCommand(op, &arguments);
-    d->SetScope(LOOP_SCOPE);
+    Debug::SetScope(LOOP_SCOPE);
+    Debug::print(OUT);
+    Debug::println(LuaSerial::SerializeValue(returned), false); // Failing upon all or just things containing LuaStrings?
 
-    S->print(OUT);
-    S->println(LuaSerial::SerializeValue(returned));
-
-    d->printMemory();
+    Debug::printRam();
 
     delete returned;
   }
   digitalWrite(13, false);
 }
 
-void Commander::RunOnline(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
+void Commander::RunOnline(HardwareSerial* S, ComputerCraftTerm* CCT) {
   Commander::blinkSet = false;
   Serial.println(UNAVAILABLE);
 }
 
-void Commander::RunBlink(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
+void Commander::RunBlink(HardwareSerial* S, ComputerCraftTerm* CCT) {
   digitalWrite(13, Commander::blinkState);
 
   // clear and draw the chevron only once so it doesn't flicker
   if (!Commander::blinkSet) {
-    d->SetScope(BLINK_SCOPE);
-    d->println(NO_CONNECTION);
+    Debug::SetScope(BLINK_SCOPE);
+    Debug::println(NO_CONNECTION);
     CCT->clear();
     CCT->setTextScale(2);
     CCT->setCursorPos(1, 1);
@@ -157,6 +123,6 @@ void Commander::RunBlink(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT) {
   delay(400);
 }
 
-String ReadNext(HardwareSerial* S) {
-  return S->readStringUntil(SEMICOLON);
+void ReadNext(HardwareSerial* S, char* str, byte len) {
+  S->readBytesUntil(SEMICOLON, str, len - 2);
 }

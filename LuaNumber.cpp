@@ -16,7 +16,7 @@ LuaNumber::LuaNumber(String& value) : LuaValue(LType::number) {
 
 byte LuaNumber::Serialize() {
   // Clear the buffer.
-  LuaValue::Zero(Serialized);
+  Zero(Serialized);
 
   // eeeeeeggghhhh
   String str = String(Value); // hopefully using this to convert numbers won't cause memory death?
