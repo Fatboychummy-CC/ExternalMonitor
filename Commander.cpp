@@ -109,6 +109,8 @@ void Commander::RunTerminal(HardwareSerial* S, Debug* d, ComputerCraftTerm* CCT)
     S->print(OUT);
     S->println(LuaSerial::SerializeValue(returned));
 
+    d->printMemory();
+
     delete returned;
   }
   digitalWrite(13, false);
