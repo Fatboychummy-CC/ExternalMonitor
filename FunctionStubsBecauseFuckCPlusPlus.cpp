@@ -4,11 +4,11 @@
 void InsertBuffer(char* buffer, const char* insert, byte pos, byte insertionSize, byte bufferSize) {
   // protect against out-of-bounds
   //   if the end of our string is going to be "further" than the end of the buffer,
-  //   set the length of our string to be the end of the buffer, subtract by the position we're inserting at, subtract 1 for the null.
-  if (pos + insertionSize >= bufferSize) insertionSize = bufferSize - pos - 1;
+  //   set the length of our string to be the end of the buffer, subtract by the position we're inserting at, subtract 1 for the null, subtract 1 for arrays starting at 0.
+  if (pos + insertionSize >= bufferSize - 2) insertionSize = bufferSize - pos - 2;
 
   // copy stuff from the insertion to the buffer
-  for (byte i = pos; i < pos + insertionSize - 1; i++) {
+  for (byte i = pos; i < pos + insertionSize; i++) {
     buffer[i] = insert[i - pos];
   }
 
@@ -19,11 +19,11 @@ void InsertBuffer(char* buffer, const char* insert, byte pos, byte insertionSize
 void InsertBuffer(char* buffer, char* insert, byte pos, byte insertionSize, byte bufferSize) {
   // protect against out-of-bounds
   //   if the end of our string is going to be "further" than the end of the buffer,
-  //   set the length of our string to be the end of the buffer, subtract by the position we're inserting at, subtract 1 for the null.
-  if (pos + insertionSize >= bufferSize) insertionSize = bufferSize - pos - 1;
+  //   set the length of our string to be the end of the buffer, subtract by the position we're inserting at, subtract 1 for the null, subtract 1 for arrays starting at 0.
+  if (pos + insertionSize >= bufferSize - 2) insertionSize = bufferSize - pos - 2;
 
   // copy stuff from the insertion to the buffer
-  for (byte i = pos; i < pos + insertionSize - 1; i++) {
+  for (byte i = pos; i < pos + insertionSize; i++) {
     buffer[i] = insert[i - pos];
   }
 
@@ -31,17 +31,17 @@ void InsertBuffer(char* buffer, char* insert, byte pos, byte insertionSize, byte
   buffer[pos + insertionSize] = 0;
 }
 
-void InsertBuffer(char* buffer, const char& insert, byte pos, byte insertionSize, byte bufferSize) {
+void InsertBuffer(char* buffer, const char& insert, byte pos, byte bufferSize) {
   // protect against out-of-bounds
   //   if the end of our string is going to be "further" than the end of the buffer,
-  //   set the length of our string to be the end of the buffer, subtract by the position we're inserting at, subtract 1 for the null.
-  if (pos + insertionSize >= bufferSize) insertionSize = bufferSize - pos - 1;
+  //   return, because this is a 1-length string.
+  if (pos + 1 >= bufferSize - 2) return;
 
   // copy stuff from the insertion to the buffer
   buffer[pos] = insert;
 
   // Put null character at the end of the inserted string.
-  buffer[pos + insertionSize] = 0;
+  buffer[pos + 1] = 0;
 }
 
 

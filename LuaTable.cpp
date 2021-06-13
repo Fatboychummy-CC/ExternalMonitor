@@ -29,7 +29,7 @@ byte LuaTable::Serialize() {
   LuaValue::Zero(Serialized);
 
   // Insert the initial opening brace "{"
-  InsertBuffer(Serialized, OPEN_BRACE, 0, 1, LuaValue::MAX_ALLOC);
+  InsertBuffer(Serialized, OPEN_BRACE, 0, LuaValue::MAX_ALLOC);
 
   // Insert each item in the storage.
   byte insertPos = 1;
@@ -52,13 +52,13 @@ byte LuaTable::Serialize() {
 
     // Insert comma if we are not at the end. "{32,"
     if (i != _size - 1) {
-      InsertBuffer(Serialized, COMMA, insertPos, 1, LuaValue::MAX_ALLOC);
+      InsertBuffer(Serialized, COMMA, insertPos, LuaValue::MAX_ALLOC);
       insertPos++;
     }
   }
 
   // Insert the closing brace when we're done. "{32,64}"
-  InsertBuffer(Serialized, CLOSE_BRACE, insertPos, 1, LuaValue::MAX_ALLOC);
+  InsertBuffer(Serialized, CLOSE_BRACE, insertPos, LuaValue::MAX_ALLOC);
 
   return insertPos++; // insertPos + 1 should be the length of the string.
 }
