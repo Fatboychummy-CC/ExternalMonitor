@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "Constants.h"
+#include "FunctionStubsBecauseFuckCPlusPlus.h"
 
 class Debug {
   public:
@@ -38,7 +39,7 @@ class Debug {
     }
 
     template<typename T>
-    void print(T& data, bool showScope) const {
+    void print(T& data, bool showScope = true) const {
       if (debugEnabled) {
         if (showScope)
           this->printScope();
@@ -48,7 +49,7 @@ class Debug {
     }
 
     template<typename T>
-    void println(const T& data, bool showScope) const {
+    void println(const T& data, bool showScope = true) const {
       if (debugEnabled) {
         if (showScope)
           this->printScope();
@@ -57,14 +58,26 @@ class Debug {
       }
     }
 
-    template<typename T>
-    void print(const T& data) const {
-      this->print(data, true);
-    }
+    void printMemory(bool showScope = true) {
+      int ram = freeRam();
+      if (showScope) {
+        // get the old scope.
+        char oldScope[30];
+        strcpy(scope, oldScope);
 
-    template<typename T>
-    void println(const T& data) const {
-      this->println(data, true);
+        // set new temporary scope
+        this->SetScope("HEAP<->STACK DISTANCE");
+        this->printScope();
+
+        // print data
+        s->println(ram);
+
+        // return scope to old scope
+        this->SetScope(oldScope);
+      } else {
+        // print data
+        s->println(ram);
+      }
     }
 
   private:
