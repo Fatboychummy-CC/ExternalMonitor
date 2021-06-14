@@ -16,10 +16,24 @@ class Debug {
     static void printScope();
 
     template<typename T>
-    static void print(const T& data, bool showScope = true);
+    static void print(const T& data, bool showScope = true) {
+      if (debugEnabled) {
+        if (showScope)
+          printScope();
+        Serial.print(data);
+        delay(delayTime);
+      }
+    }
 
     template<typename T>
-    static void println(const T& data, bool showScope = true);
+    static void println(const T& data, bool showScope = true) {
+      if (debugEnabled) {
+        if (showScope)
+          printScope();
+        Serial.println(data);
+        delay(delayTime);
+      }
+    }
 
     static void printRam(bool showScope = true);
 

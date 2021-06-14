@@ -3,6 +3,12 @@
 #include "FunctionStubsBecauseFuckCPlusPlus.h"
 #include "Debug.h"
 
+bool Debug::debugEnabled = false;
+bool Debug::scoped = false;
+short Debug::delayTime = 1000;
+char Debug::oldScope[30];
+char Debug::scope[30];
+
 void Debug::EnableDebugging() {
   debugEnabled = true;
 }
@@ -27,26 +33,6 @@ void Debug::printScope() {
     Serial.print(CLOSE_BRACKET);
     Serial.print(COLON);
     Serial.print(SPACE);
-  }
-}
-
-template<typename T>
-void Debug::print(const T& data, bool showScope) {
-  if (debugEnabled) {
-    if (showScope)
-      printScope();
-    Serial.print(data);
-    delay(delayTime);
-  }
-}
-
-template<typename T>
-void Debug::println(const T& data, bool showScope) {
-  if (debugEnabled) {
-    if (showScope)
-      printScope();
-    Serial.println(data);
-    delay(delayTime);
   }
 }
 
@@ -89,7 +75,3 @@ void Debug::printMemory(bool showScope) {
     Serial.println(mem);
   }
 }
-
-bool Debug::debugEnabled = false;
-bool Debug::scoped = false;
-short Debug::delayTime = 1000;
