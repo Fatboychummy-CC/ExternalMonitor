@@ -1,0 +1,35 @@
+language: c
+sudo: false
+cache:
+  directories:
+    - ~/arduino_ide
+    - ~/.arduino15/packages/
+git:
+  depth: false
+  quiet: true
+addons:
+  apt:
+    sources:
+      - llvm-toolchain-trusty-5.0
+      - key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
+    packages:
+      - clang-format-5.0
+env:
+  global:
+#    - ARDUINO_IDE_VERSION="1.8.10"
+     - PRETTYNAME="IRL Monitor for ComputerCraft"
+# Optional, will default to "$TRAVIS_BUILD_DIR/Doxyfile"
+#    - DOXYFILE: $TRAVIS_BUILD_DIR/Doxyfile
+#include "SSD1306Ascii.h"
+#include "SSD1306AsciiWire.h"
+
+before_install:
+   - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
+   - curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/run-clang-format.py > run-clang-format.py
+
+install:
+   - arduino --install-library "SSD1306Ascii", "Adafruit ESP8266"
+
+script:
+   - python run-clang-format.py -r .
+   - build_main_platforms
