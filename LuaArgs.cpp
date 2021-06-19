@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "LuaValue.h"
 #include "LuaArgs.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 LuaArgs::LuaArgs() : LuaValue(LType::table) {
   for (byte i = 0; i < _maxSize; i++) {

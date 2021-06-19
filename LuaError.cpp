@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "LuaValue.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 static char Serialized[LuaValue::MAX_ALLOC];
 

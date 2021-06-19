@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "LuaBool.h"
 #include "LuaValue.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 char LuaBool::Serialized[6];
 

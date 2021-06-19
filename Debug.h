@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "Constants.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 class Debug {
   public:

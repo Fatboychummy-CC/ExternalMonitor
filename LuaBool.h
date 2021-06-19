@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "LuaValue.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 class LuaBool: public LuaValue {
   public:

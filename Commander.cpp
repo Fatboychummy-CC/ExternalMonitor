@@ -14,7 +14,7 @@
 #include "Debug.h"
 #include "LED.h"
 #include "Constants.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 void ReadNext(HardwareSerial*, char* str, byte len);
 

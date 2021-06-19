@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "Constants.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 #include "Debug.h"
 
 bool Debug::debugEnabled = false;

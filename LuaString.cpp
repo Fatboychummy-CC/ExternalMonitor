@@ -2,7 +2,7 @@
 #include "LuaString.h"
 #include "LuaValue.h"
 #include "Constants.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 char LuaString::Serialized[LuaValue::MAX_ALLOC] = "";
 
