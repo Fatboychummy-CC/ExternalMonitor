@@ -17,9 +17,9 @@ class LuaString: public LuaValue {
 
     char* GetSerialized();
 
+    static char Serialized[LuaValue::MAX_ALLOC];
     char Value[LuaValue::MAX_ALLOC];
     byte valueSize;
-    static char Serialized[LuaValue::MAX_ALLOC];
 };
 
 #endif

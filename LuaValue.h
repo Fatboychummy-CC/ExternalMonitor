@@ -2,7 +2,6 @@
 #define __LUAVALUE__
 
 #include <Arduino.h>
-#include "Constants.h"
 
 enum LType : byte {
   uninitialized = 0, string = 1, number = 2, _boolean = 3, table = 4, nil = 5
@@ -10,12 +9,12 @@ enum LType : byte {
 
 class LuaValue {
   public:
-    LuaValue(LType type) : _type(type) {}
+    LuaValue(const LType& type);
     /**
      * @returns the size of the buffer inserted.
      */
     virtual byte Serialize() = 0;
-    virtual ~LuaValue() {}
+    virtual ~LuaValue();
 
     virtual char* GetSerialized() = 0;
 

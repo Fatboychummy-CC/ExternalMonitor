@@ -9,7 +9,7 @@ class Debug {
   public:
     static void EnableDebugging();
     static void SetDebugDelay(int n);
-    static void SetScope(char* scope);
+    static void SetScope(char* _scope);
     static char* GetScope();
     static void ClearScope();
 

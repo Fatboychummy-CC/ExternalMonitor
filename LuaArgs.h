@@ -6,24 +6,18 @@
 #include "Constants.h"
 #include "FunctionStubsBecauseFuckCPlusPlus.h"
 
-class LuaTable: public LuaValue {
+class LuaArgs{
   public:
-    LuaTable();
-    ~LuaTable(); // DOES NOT DESTRUCT INTERNAL OBJECTS!
-
-    byte Serialize();
-
+    LuaArgs();
+    ~LuaArgs(); // DOES NOT DESTRUCT INTERNAL OBJECTS!
     void InsertValue(LuaValue* LV);
 
     LuaValue* At(byte index);
 
     byte size();
-
-    char* GetSerialized();
-
-    static char Serialized[LuaValue::MAX_ALLOC];
   private:
-    LuaValue* Storage[5];
+    static constexpr byte _maxSize = 3;
+    LuaValue* Storage[_maxSize];
     byte _size = 0;
 };
 

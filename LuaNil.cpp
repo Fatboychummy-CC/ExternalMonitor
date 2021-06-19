@@ -1,19 +1,25 @@
 #include <Arduino.h>
 #include "LuaNil.h"
 #include "LuaValue.h"
+#include "Debug.h"
 
 char LuaNil::Serialized[LuaValue::MAX_ALLOC] = "nil";
 
-LuaNil::LuaNil() : LuaValue(LType::nil) {};
+LuaNil::LuaNil() : LuaValue(LType::nil) {
+  Debug::printRam();
+  Debug::println("#######: LuaNil constructed!");
+  Debug::print("#######: ");
+  Debug::println(this->type(), false);
+};
+LuaNil::~LuaNil() {
+  Debug::printRam();
+  Debug::println("#######: LuaNil destructed!");
+}
 
 byte LuaNil::Serialize() {
-  Serial.println("Serialize: loop: nil value: return 3");
-  delay(400);
   return 3;
 }
 
 char* LuaNil::GetSerialized() {
-  Serial.println("Serialize: loop: nil value: return serialized value");
-  delay(400);
   return Serialized;
 }

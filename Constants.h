@@ -32,6 +32,8 @@ const char BAD_ARGUMENTS[]   = "Bad arguments.";
 const char NULL_COMMAND[]    = "Null Command.";
 const char UNKNOWN_COMMAND[] = "Unknown command.";
 
+const char NIL[] = "nil";
+
 const char UNAVAILABLE[]   = "This method is currently unavailable.";
 const char NO_CONNECTION[] = "Not connected.";
 

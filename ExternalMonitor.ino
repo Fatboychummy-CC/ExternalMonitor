@@ -43,7 +43,7 @@ void setup() {
 
   CCT = new ComputerCraftTerm(&window);
   Debug::EnableDebugging();
-  Debug::SetDebugDelay(500);
+  Debug::SetDebugDelay(200);
 
   State = new Stater();
   if (debugMode) {

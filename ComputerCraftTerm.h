@@ -36,6 +36,8 @@ class ComputerCraftTerm {
     LuaValue* getPaletteColor(int color);
     LuaValue* getTextScale();
 
+    LuaValue* StringTest();
+
     // Writers
     LuaValue* write(char* text);
     LuaValue* write(const char* text);

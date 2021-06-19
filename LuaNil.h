@@ -7,6 +7,7 @@
 class LuaNil: public LuaValue {
   public:
     explicit LuaNil();
+    ~LuaNil();
     byte Serialize();
 
     char* GetSerialized();

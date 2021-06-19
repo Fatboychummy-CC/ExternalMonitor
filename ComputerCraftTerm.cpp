@@ -11,6 +11,8 @@
 #include "LuaNumber.h"
 #include "Constants.h"
 
+#include "Debug.h"
+
 // 0X3C+SA0 - 0x3C or 0x3D
 #define I2C_ADDRESS 0x3C
 
@@ -38,6 +40,14 @@ LuaValue* ComputerCraftTerm::getSize() {
 
   LV->InsertValue(new LuaNumber(21));
   LV->InsertValue(new LuaNumber(8));
+
+  return LV;
+}
+
+LuaValue* ComputerCraftTerm::StringTest() {
+  LuaTable* LV = new LuaTable();
+  LV->InsertValue(new LuaNil());
+  LV->InsertValue(new LuaString("Hello World!"));
 
   return LV;
 }
@@ -206,8 +216,6 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
 
       tbl->InsertValue(new LuaNil());
       tbl->InsertValue(new LuaString(NULL_COMMAND));
-
-      Debug::println(F("Test."));
 
       return tbl;
     case TermCommands::getSize:

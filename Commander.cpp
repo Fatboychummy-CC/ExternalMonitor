@@ -5,7 +5,7 @@
 #include "SSD1306AsciiWire.h"
 #include "ComputerCraftTerm.h"
 #include "LuaValue.h"
-#include "LuaTable.h"
+#include "LuaArgs.h"
 #include "LuaNil.h"
 #include "LuaBool.h"
 #include "LuaString.h"

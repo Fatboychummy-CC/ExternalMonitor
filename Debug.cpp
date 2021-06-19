@@ -15,9 +15,9 @@ void Debug::EnableDebugging() {
 void Debug::SetDebugDelay(int n) {
   delayTime = n;
 }
-void Debug::SetScope(char* scope) {
+void Debug::SetScope(char* _scope) {
   scoped = true;
-  strcpy(scope, scope);
+  strcpy(scope, _scope);
 }
 char* Debug::GetScope() {
   return scope;
