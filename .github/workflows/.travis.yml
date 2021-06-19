@@ -31,12 +31,15 @@ env:
 #include "SSD1306AsciiWire.h"
 jobs:
   before_install:
-    - run: source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
-    - run: curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/run-clang-format.py > run-clang-format.py
+    steps:
+      - run: source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
+      - run: curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/run-clang-format.py > run-clang-format.py
 
   install:
-    - run: arduino --install-library "SSD1306Ascii", "Adafruit ESP8266"
+    steps:
+      - run: arduino --install-library "SSD1306Ascii", "Adafruit ESP8266"
 
   script:
-    - run: python run-clang-format.py -r .
-    - run: build_main_platforms
+    steps:
+      - run: python run-clang-format.py -r .
+      - run: build_main_platforms
