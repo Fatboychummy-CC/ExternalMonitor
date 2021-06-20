@@ -1,22 +1,21 @@
-#ifndef __LUANUMBER__
-#define __LUANUMBER__
+#ifndef __LUATWONUM__
+#define __LUATWONUM__
 
 #include <Arduino.h>
 #include "LuaValue.h"
 #include "Constants.h"
 #include "GlobalFunctions.h"
 
-class LuaNumber: public LuaValue {
+class LuaTwoNum: public LuaValue {
   public:
-    LuaNumber(double value);
-
-    LuaNumber(String& value);
+    LuaTwoNum(double value1, double value2);
 
     byte Serialize();
 
     char* GetSerialized();
 
-    double Value = 0;
+    double Value1 = 0;
+    double Value2 = 0;
     static char Serialized[LuaValue::MAX_ALLOC];
 };
 
