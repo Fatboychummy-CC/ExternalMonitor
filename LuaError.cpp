@@ -3,6 +3,7 @@
 #include "LuaError.h"
 #include "GlobalFunctions.h"
 #include "Constants.h"
+#include "Debug.h"
 
 static char LuaError::Serialized[LuaValue::MAX_ALLOC];
 
