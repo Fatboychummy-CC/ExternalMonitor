@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "LuaValue.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 void InsertBuffer(char* buffer, const char* insert, byte pos, byte insertionSize, byte bufferSize) {
   // protect against out-of-bounds

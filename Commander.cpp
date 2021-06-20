@@ -14,7 +14,7 @@
 #include "Debug.h"
 #include "LED.h"
 #include "Constants.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "GlobalFunctions.h"
 
 void ReadNext(HardwareSerial*, char* str, byte len);
 
@@ -26,7 +26,7 @@ void Commander::RunTerminal(HardwareSerial* S, ComputerCraftTerm* CCT) {
   Commander::blinkSet = false;
   if (S->available()) {
     byte op = 0, numArgs = 0;
-    LuaTable arguments;
+    LuaArgs arguments;
 
 
     Debug::SetScope(LOOP_SCOPE);

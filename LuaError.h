@@ -6,14 +6,13 @@
 
 class LuaError: public LuaValue {
   public:
-    explicit LuaError(const char& error);
+    explicit LuaError(const char* error);
     ~LuaError();
 
     byte Serialize();
     char* GetSerialized();
 
     static constexpr byte maxStringSize = LuaValue::MAX_ALLOC - 8;
-    char Value[maxStringSize];
     byte valueSize;
     static char Serialized[LuaValue::MAX_ALLOC];
 };

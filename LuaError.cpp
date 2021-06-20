@@ -1,12 +1,14 @@
 #include <Arduino.h>
 #include "LuaValue.h"
-#include "FunctionStubsBecauseFuckCPlusPlus.h"
+#include "LuaError.h"
+#include "GlobalFunctions.h"
+#include "Constants.h"
+#include "Debug.h"
 
-static char Serialized[LuaValue::MAX_ALLOC];
+static char LuaError::Serialized[LuaValue::MAX_ALLOC];
 
-explicit LuaError(const char& error) {
+LuaError::LuaError(const char* error) : LuaValue(LType::table) {
   valueSize = strlen(error);
-  Zero(Value);
 
   Zero(Serialized, LuaValue::MAX_ALLOC);
   // [                 ]
@@ -32,21 +34,12 @@ explicit LuaError(const char& error) {
   InsertBuffer(Serialized, CLOSE_BRACE, 7 + valueSize, LuaValue::MAX_ALLOC);
   // [{nil,"Error!"}   ]
 }
-~LuaError() {}
+LuaError::~LuaError() {}
 
-
-/*
-void InsertBuffer(char* buffer, const char* insert, byte pos, byte insertionSize, byte bufferSize)
-
-void InsertBuffer(char* buffer, char* insert, byte pos, byte insertionSize, byte bufferSize)
-
-void InsertBuffer(char* buffer, const char& insert, byte pos, byte bufferSize)
-*/
-
-byte Serialize() {
+byte LuaError::Serialize() {
   return 7 + valueSize;
 }
 
-char* GetSerialized() {
+char* LuaError::GetSerialized() {
   return Serialized;
 }
