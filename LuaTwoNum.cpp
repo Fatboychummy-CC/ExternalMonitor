@@ -36,7 +36,7 @@ byte LuaTwoNum::Serialize() {
   InsertBuffer(Serialized, str2.c_str(), len1 + 2, len2, LuaValue::MAX_ALLOC);
   // '{432.374,729.674  '
 
-  InsertBuffer(Serialized, CLOSE_BRACE, len1 + len2 + 3, LuaValue::MAX_ALLOC);
+  InsertBuffer(Serialized, CLOSE_BRACE, len1 + len2 + 2, LuaValue::MAX_ALLOC);
   // '{432.374,729.674}'
 
   return len1 + len2 + 3;
