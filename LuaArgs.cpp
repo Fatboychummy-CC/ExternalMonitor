@@ -3,7 +3,7 @@
 #include "LuaArgs.h"
 #include "GlobalFunctions.h"
 
-LuaArgs::LuaArgs() : LuaValue(LType::table) {
+LuaArgs::LuaArgs(){
   for (byte i = 0; i < _maxSize; i++) {
     Storage[i] = nullptr;
   }

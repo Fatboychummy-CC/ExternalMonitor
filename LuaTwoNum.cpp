@@ -1,13 +1,14 @@
 #include <Arduino.h>
 #include "LuaValue.h"
+#include "LuaTwoNum.h"
 #include "Constants.h"
 #include "GlobalFunctions.h"
 
 char LuaTwoNum::Serialized[LuaValue::MAX_ALLOC] = "";
 
-LuaTwoNum::LuaTwoNum(double value1, double value2) : LuaValue(LType::number), Value1(value1), Value2(value2) {}
+LuaTwoNum::LuaTwoNum(double value1, double value2) : LuaValue(LType::table), Value1(value1), Value2(value2) {}
 
-LuaTwoNum::LuaTwoNum(String& value1, String& value2) : LuaValue(LType::number) {
+LuaTwoNum::LuaTwoNum(String& value1, String& value2) : LuaValue(LType::table) {
   Value1 = value1.toDouble();
   Value2 = value2.toDouble();
 }

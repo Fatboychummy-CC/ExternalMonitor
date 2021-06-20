@@ -9,6 +9,7 @@
 class LuaTwoNum : public LuaValue {
   public:
     LuaTwoNum(double value1, double value2);
+    LuaTwoNum(String& value1, String& value2);
 
     byte Serialize();
 

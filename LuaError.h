@@ -6,7 +6,7 @@
 
 class LuaError: public LuaValue {
   public:
-    explicit LuaError(const char& error);
+    explicit LuaError(const char* error);
     ~LuaError();
 
     byte Serialize();
