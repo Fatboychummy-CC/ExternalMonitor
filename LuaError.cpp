@@ -8,7 +8,6 @@ static char LuaError::Serialized[LuaValue::MAX_ALLOC];
 
 LuaError::LuaError(const char* error) : LuaValue(LType::table) {
   valueSize = strlen(error);
-  Zero(Value);
 
   Zero(Serialized, LuaValue::MAX_ALLOC);
   // [                 ]
