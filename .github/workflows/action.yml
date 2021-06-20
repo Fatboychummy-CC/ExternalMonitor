@@ -1,6 +1,12 @@
 name: Arduino Library CI
 
-on: [pull_request, push, repository_dispatch]
+on:
+    push:
+      branches:
+        - main
+    pull_request:
+      branches:
+        - main
 
 jobs:
   build:
@@ -19,6 +25,8 @@ jobs:
     - name: pre-install
       run: bash ci/actions_install.sh
 
-    - name: test platforms
+    - name: install arduino libraries
       run: arduino --install-library "SSD1306Ascii","Adafruit ESP8266"
+
+    - name: test platforms
       run: python3 ci/build_platform.py main_platforms
