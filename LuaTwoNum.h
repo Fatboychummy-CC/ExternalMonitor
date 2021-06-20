@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include "GlobalFunctions.h"
 
-class LuaTwoNum: public LuaValue {
+class LuaTwoNum : public LuaValue {
   public:
     LuaTwoNum(double value1, double value2);
 

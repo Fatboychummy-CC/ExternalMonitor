@@ -6,7 +6,8 @@
 #include "SSD1306Ascii.h"
 #include "SSD1306AsciiWire.h"
 #include "LuaValue.h"
-#include "LuaTable.h"
+#include "LuaArgs.h"
+#include "LuaError.h"
 #include "Debug.h"
 
 /*
@@ -56,13 +57,13 @@ class ComputerCraftTerm {
     LuaValue* setPaletteColor(int index, int r, int g, int b);
     LuaValue* setTextScale(byte scale);
 
-    LuaValue* RunCommand(byte command, LuaTable* arguments);
+    LuaValue* RunCommand(byte command, LuaArgs* arguments);
 
     // Helpers
-    bool argCount(LuaTable* arguments, byte numArgs);
+    bool argCount(LuaArgs* arguments, byte numArgs);
     bool expect(LuaValue* argument, const LType& expected);
-    LuaTable* badArg();
-    LuaTable* badCommand();
+    LuaError* badArg();
+    LuaError* badCommand();
 
   private:
     SSD1306AsciiWire* oled;

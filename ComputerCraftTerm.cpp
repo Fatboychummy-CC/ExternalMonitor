@@ -4,7 +4,10 @@
 #include "SSD1306AsciiWire.h"
 #include "ComputerCraftTerm.h"
 #include "LuaValue.h"
-#include "LuaTable.h"
+#include "LuaArgs.h"
+#include "LuaError.h"
+#include "LuaTwoNum.h"
+
 #include "LuaNil.h"
 #include "LuaBool.h"
 #include "LuaString.h"
@@ -36,26 +39,19 @@ ComputerCraftTerm::ComputerCraftTerm(SSD1306AsciiWire* screen) {
 
     // getters
 LuaValue* ComputerCraftTerm::getSize() {
-  LuaTable* LV = new LuaTable();
-
-  LV->InsertValue(new LuaNumber(21));
-  LV->InsertValue(new LuaNumber(8));
+  LuaTwoNum* LV = new LuaTwoNum(21, 8);
 
   return LV;
 }
 
 LuaValue* ComputerCraftTerm::StringTest() {
-  LuaTable* LV = new LuaTable();
-  LV->InsertValue(new LuaNil());
-  LV->InsertValue(new LuaString("Hello World!"));
+  LuaError* LV = new LuaError("Test error please ignore.");
 
   return LV;
 }
 
 LuaValue* ComputerCraftTerm::getCursorPos() {
-  LuaTable* VA = new LuaTable();
-  VA->InsertValue(new LuaNumber(externalX));
-  VA->InsertValue(new LuaNumber(externalY));
+  LuaTwoNum* VA = new LuaTwoNum(externalX, externalY);
 
   return VA;
 }
@@ -178,7 +174,7 @@ LuaValue* ComputerCraftTerm::setTextScale(byte scale) {
 }
 
 
-bool ComputerCraftTerm::argCount(LuaTable* arguments, byte numArgs) {
+bool ComputerCraftTerm::argCount(LuaArgs* arguments, byte numArgs) {
   return arguments->size() < numArgs;
 }
 
@@ -186,36 +182,29 @@ bool ComputerCraftTerm::expect(LuaValue* argument, const LType& expected) {
   return argument->type() != expected;
 }
 
-LuaTable* ComputerCraftTerm::badArg() {
+LuaError* ComputerCraftTerm::badArg() {
   Debug::println(BAD_ARG);
-  LuaTable* LT = new LuaTable();
-  LT->InsertValue(new LuaNil());
-  LT->InsertValue(new LuaString(BAD_ARGUMENTS));
+  LuaError* LT = new LuaError(BAD_ARGUMENTS);
 
   return LT;
 }
 
-LuaTable* ComputerCraftTerm::badCommand() {
+LuaError* ComputerCraftTerm::badCommand() {
   Debug::println(BAD_ARG);
-  LuaTable* LT = new LuaTable();
-  LT->InsertValue(new LuaNil());
-  LT->InsertValue(new LuaString(UNKNOWN_COMMAND));
+  LuaError* LT = new LuaError(UNKNOWN_COMMAND);
 
   return LT;
 }
 
-LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaTable* arguments) {
+LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaArgs* arguments) {
   Debug::print("Command given: ");
   Debug::println(command, false);
   switch (command) {
     // getters
     case TermCommands::_null:
       Debug::println(F("Null"));
-      LuaTable* tbl;
-      tbl = new LuaTable();
-
-      tbl->InsertValue(new LuaNil());
-      tbl->InsertValue(new LuaString(NULL_COMMAND));
+      LuaError* tbl;
+      tbl = new LuaError(NULL_COMMAND);
 
       return tbl;
     case TermCommands::getSize:

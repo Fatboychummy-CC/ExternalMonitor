@@ -6,7 +6,7 @@
 #include "Constants.h"
 #include "GlobalFunctions.h"
 
-class LuaArgs{
+class LuaArgs : public LuaValue {
   public:
     LuaArgs();
     ~LuaArgs(); // DOES NOT DESTRUCT INTERNAL OBJECTS!
