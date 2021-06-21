@@ -25,7 +25,7 @@ char Commander::_commandData[_COMMAND_DATA_LEN] = "";
 void Commander::RunTerminal(HardwareSerial* S, ComputerCraftTerm* CCT) {
   Commander::blinkSet = false;
   if (S->available()) {
-    byte op = 0, numArgs = 0;
+    byte op = 0, numArgs = 0, ctype = 0;
     LuaArgs arguments;
 
 
@@ -45,28 +45,35 @@ void Commander::RunTerminal(HardwareSerial* S, ComputerCraftTerm* CCT) {
     Debug::println(_commandData, false);
     numArgs = atoi(_commandData);
 
+    Debug::SetScope(ARG_LOOP_SCOPE);
     // for each argument:
     for (byte i = 0; i < numArgs; i++) {
-/*
+      // get the arg type
+      ReadNext(S, _commandData, _COMMAND_DATA_LEN);
+      Debug::print(CTYPE);
+      Debug::println(_commandData, false);
+      ctype = atoi(_commandData);
+
+      // get the arg data.
+      ReadNext(S, _commandData, _COMMAND_DATA_LEN);
+      Debug::print(DATA);
+      Debug::println(_commandData, false);
+
       switch (ctype) {
         case LType::number: {
-          arguments.InsertValue(new LuaNumber(str)); // LuaNumber is not converted to c_string.
+          arguments.InsertValue(new LuaNumber(atof(_commandData)));
           break;
         } case LType::string: {
-          arguments.InsertValue(new LuaString(str.c_str())); // LuaString isconverted to c_string.
+          arguments.InsertValue(new LuaString(_commandData));
           break;
         } case LType::_boolean: {
-          arguments.InsertValue(new LuaBool(str.c_str())); // LuaBool is converted to c_string.
+          arguments.InsertValue(new LuaBool(_commandData));
           break;
         } default: {
           arguments.InsertValue(new LuaNil());
           break;
         }
       }
-
-      Debug::print(DATA);
-      Debug::println(str, false);
-*/
     }
 
     Debug::SetScope(RUN_COMMAND_SCOPE);
