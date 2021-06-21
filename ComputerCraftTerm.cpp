@@ -86,7 +86,7 @@ LuaValue* ComputerCraftTerm::write(char* text) {
   oled->setCursor(cursorX, cursorY); // Ensure cursor is at correct position
   oled->print(text);
   externalX += strlen(text);
-  cursorX += (strlen(text) + 1) * oled->fontWidth();
+  cursorX = oled->col();
 
   return new LuaNil();
 }
@@ -95,7 +95,7 @@ LuaValue* ComputerCraftTerm::write(const char* text) {
   oled->setCursor(cursorX, cursorY);
   oled->print(text);
   externalX += strlen(text);
-  cursorX += (strlen(text) + 1) * oled->fontWidth();
+  cursorX = oled->col();
 
   return new LuaNil();
 }
@@ -104,7 +104,7 @@ LuaValue* ComputerCraftTerm::write(const char& text) {
   oled->setCursor(cursorX, cursorY);
   oled->print(text);
   externalX += 1;
-  cursorX += (1 + 1) * oled->fontWidth();
+  cursorX = oled->col();
 
   return new LuaNil();
 }
