@@ -86,6 +86,9 @@ void Commander::RunTerminal(HardwareSerial* S, ComputerCraftTerm* CCT) {
 
     delete returned;
   }
+
+  CCT->Blink();
+
   digitalWrite(13, false);
 }
 

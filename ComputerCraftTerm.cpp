@@ -3,16 +3,16 @@
 #include "SSD1306Ascii.h"
 #include "SSD1306AsciiWire.h"
 #include "ComputerCraftTerm.h"
+#include "Constants.h"
+
 #include "LuaValue.h"
 #include "LuaArgs.h"
 #include "LuaError.h"
 #include "LuaTwoNum.h"
-
 #include "LuaNil.h"
 #include "LuaBool.h"
 #include "LuaString.h"
 #include "LuaNumber.h"
-#include "Constants.h"
 
 #include "Debug.h"
 
@@ -34,6 +34,8 @@ ComputerCraftTerm::ComputerCraftTerm(SSD1306AsciiWire* screen) {
 
   oled->setFont(System5x7);
   oled->clear();
+
+  lastBlink = millis();
 }
 
 
@@ -150,7 +152,11 @@ LuaValue* ComputerCraftTerm::setCursorPos(byte x, byte y) {
   return new LuaNil();
 }
 
-LuaValue* ComputerCraftTerm::setCursorBlink(bool blink) {} // I'm unsure how I'll implement cursor blink, will figure that out later.
+LuaValue* ComputerCraftTerm::setCursorBlink(bool blink) {
+  cursorBlink = blink;
+
+  return new LuaNil();
+} // I'm unsure how I'll implement cursor blink, will figure that out later.
 
 LuaValue* ComputerCraftTerm::setTextColor(int color) {
 
@@ -341,4 +347,21 @@ LuaValue* ComputerCraftTerm::RunCommand(byte command, LuaArgs* arguments) {
 
   Debug::println(F("This should never happen."));
   return new LuaString(F("This should never happen."));
+}
+
+void ComputerCraftTerm::Blink() {
+  unsigned long t = millis();
+  if (cursorBlink && t >= lastBlink + 400) {
+    lastBlinkState = !lastBlinkState;
+
+    if (lastBlinkState) {
+      oled->write(UNDERSCORE);
+      oled->setCursor(cursorX, cursorY);
+    } else {
+      oled->write(SPACE);
+      oled->setCursor(cursorX, cursorY);
+    }
+
+    lastBlink = t;
+  }
 }

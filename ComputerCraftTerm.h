@@ -65,11 +65,14 @@ class ComputerCraftTerm {
     LuaError* badArg();
     LuaError* badCommand();
 
+    void Blink();
+
   private:
     SSD1306AsciiWire* oled;
     byte cursorX = 0, cursorY = 0, externalX = 1, externalY = 1;
     int textColor = 0, backgroundColor = 0;
-    bool cursorBlink = false, hasColor = false;
+    bool cursorBlink = false, hasColor = false, lastBlinkState = false;
+    unsigned long lastBlink;
 };
 
 #endif
